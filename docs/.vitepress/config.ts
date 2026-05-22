@@ -35,7 +35,7 @@ export default defineConfig({
       },
     ],
     socialLinks: [
-      { icon: "github", link: "https://github.com/your-name/hono-inertia" },
+      { icon: "github", link: "https://github.com/hugo-abdou/huno-inertia" },
     ],
   },
 });
