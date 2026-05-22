@@ -45,3 +45,13 @@ Common client packages:
 - `@inertiajs/react`
 - `@inertiajs/vue3`
 - `@inertiajs/svelte`
+
+## Redirect Back Example
+
+```ts
+app.post("/profile", async (c) => {
+  await updateProfile(c);
+
+  return inertia.back(c, "/settings");
+});
+```

@@ -29,4 +29,8 @@ app.post("/logout", (c) => {
   return inertia.redirect(c, "/");
 });
 
+app.post("/profile", (c) => {
+  return inertia.back(c);
+});
+
 export default app;

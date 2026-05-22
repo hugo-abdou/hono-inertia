@@ -90,11 +90,13 @@ app.get("/users", (c) =>
 
 ```ts
 app.post("/logout", (c) => inertia.redirect(c, "/"));
+app.post("/profile", (c) => inertia.back(c));
 app.get("/billing", (c) => inertia.location(c, "https://billing.example.com"));
 ```
 
-`redirect()` defaults to `303` for Inertia requests. `location()` returns the
-Inertia external redirect response: `409` with `X-Inertia-Location`.
+`redirect()` and `back()` default to `303` for Inertia requests. `back()` uses
+the `Referer` header and falls back to `/`. `location()` returns the Inertia
+external redirect response: `409` with `X-Inertia-Location`.
 
 ## Documentation
 

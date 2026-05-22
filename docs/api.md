@@ -45,6 +45,17 @@ for Inertia requests. The default status is `303`.
 return inertia.redirect(c, "/dashboard");
 ```
 
+## `inertia.back(c, fallback?, status?)`
+
+Redirects to the request `Referer` header, similar to Laravel's `back()`.
+When the request has no `Referer`, it redirects to the fallback path. The
+default fallback is `/`, and the default status is `303`.
+
+```ts
+return inertia.back(c);
+return inertia.back(c, "/dashboard");
+```
+
 ## `inertia.location(c, url)`
 
 Returns an Inertia external redirect response:

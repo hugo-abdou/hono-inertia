@@ -22,6 +22,25 @@ You can pass `302` or `303` explicitly:
 return inertia.redirect(c, "/users", 303);
 ```
 
+## Back Redirects
+
+Use `back()` when you want Laravel-style redirect-back behavior:
+
+```ts
+app.post("/profile", async (c) => {
+  await updateProfile(c);
+
+  return inertia.back(c);
+});
+```
+
+`back()` redirects to the `Referer` header. If the header is missing, it uses
+`/` by default:
+
+```ts
+return inertia.back(c, "/settings");
+```
+
 ## External Redirects
 
 Use `location()` for external redirects:

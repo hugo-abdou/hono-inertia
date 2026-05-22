@@ -39,6 +39,7 @@ const createApp = () => {
   );
 
   app.post("/internal", (c) => inertia.redirect(c, "/"));
+  app.post("/back", (c) => inertia.back(c, "/fallback"));
   app.get("/external", (c) => inertia.location(c, "https://example.com/out"));
 
   return { app, calls };
@@ -104,6 +105,32 @@ describe("createInertia", () => {
     expect(res.status).toBe(303);
     expect(res.headers.get("location")).toBe("/");
     expect(res.headers.get("vary")).toBe("X-Inertia");
+  });
+
+  test("back helper redirects to the Referer header", async () => {
+    const { app } = createApp();
+    const res = await app.request("/back", {
+      method: "POST",
+      headers: {
+        "X-Inertia": "true",
+        Referer: "/previous?page=2",
+      },
+    });
+
+    expect(res.status).toBe(303);
+    expect(res.headers.get("location")).toBe("/previous?page=2");
+    expect(res.headers.get("vary")).toBe("X-Inertia");
+  });
+
+  test("back helper uses the fallback when Referer is missing", async () => {
+    const { app } = createApp();
+    const res = await app.request("/back", {
+      method: "POST",
+      headers: { "X-Inertia": "true" },
+    });
+
+    expect(res.status).toBe(303);
+    expect(res.headers.get("location")).toBe("/fallback");
   });
 
   test("location helper returns an external redirect response", async () => {

@@ -64,6 +64,7 @@ export type InertiaAdapter<TSharedProps extends InertiaProps = InertiaProps> = {
     props?: TPageProps,
   ) => Promise<Response>;
   redirect: (c: Context, location: string, status?: 302 | 303) => Response;
+  back: (c: Context, fallback?: string, status?: 302 | 303) => Response;
   location: (c: Context, url: string) => Response;
 };
 
@@ -165,13 +166,16 @@ export const createInertia = <TSharedProps extends InertiaProps = InertiaProps>(
     return c.redirect(location, status);
   };
 
+  const back = (c: Context, fallback = "/", status: 302 | 303 = 303): Response =>
+    redirect(c, c.req.header("Referer") ?? fallback, status);
+
   const location = (c: Context, url: string): Response =>
     c.body(null, 409, {
       [locationHeader]: url,
       Vary: inertiaHeader,
     });
 
-  return { render, redirect, location };
+  return { render, redirect, back, location };
 };
 
 const isInertiaRequest = (c: Context): boolean =>
